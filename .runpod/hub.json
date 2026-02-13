@@ -3,6 +3,7 @@
   "description": "Serverless endpoint for FLUX.2 image generation",
   "type": "serverless",
   "category": "image",
+  "iconUrl": "https://raw.githubusercontent.com/mindoorio-hue/flux2-runpod/master/icon.png",
   "config": {
     "runsOn": "GPU",
     "containerDiskInGb": 50,
