@@ -20,16 +20,18 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
 # Upgrade pip and install build tools
 RUN pip3 install --upgrade pip setuptools wheel
 
-# Copy requirements first for better layer caching
-COPY .runpod/requirements.txt .
+# Clone application code from GitHub (build context not provided by RunPod Hub)
+RUN git clone --depth 1 https://github.com/mindoorio-hue/flux2-runpod.git /tmp/repo && \
+    cp /tmp/repo/.runpod/requirements.txt . && \
+    cp /tmp/repo/.runpod/handler.py . && \
+    cp -r /tmp/repo/.runpod/src/ ./src/ && \
+    rm -rf /tmp/repo
+
+# Install Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Install RunPod SDK
 RUN pip3 install runpod
-
-# Copy application code
-COPY .runpod/handler.py .
-COPY .runpod/src/ ./src/
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
